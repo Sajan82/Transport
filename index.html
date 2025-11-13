@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dynamic Transport Price Comparator</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <h1>🌍 Smart Transport Price Finder</h1>
+            <p>Find best routes with intelligent location suggestions</p>
+        </header>
+
+        <!-- Search Form with Autocomplete -->
+        <section class="search-section">
+            <div class="search-container">
+                <div class="form-group">
+                    <label for="from">From (Source City)</label>
+                    <div class="autocomplete-wrapper">
+                        <input 
+                            type="text" 
+                            id="from" 
+                            placeholder="Start typing city name..." 
+                            autocomplete="off"
+                            oninput="handleFromInput(this.value)"
+                            onfocus="showFromSuggestions()"
+                            onkeydown="handleKeyboard(event, 'from')"
+                        />
+                        <div class="autocomplete-dropdown" id="fromSuggestions"></div>
+                    </div>
+                    <div class="location-badge" id="fromBadge"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="to">To (Destination City)</label>
+                    <div class="autocomplete-wrapper">
+                        <input 
+                            type="text" 
+                            id="to" 
+                            placeholder="Start typing city name..." 
+                            autocomplete="off"
+                            oninput="handleToInput(this.value)"
+                            onfocus="showToSuggestions()"
+                            onkeydown="handleKeyboard(event, 'to')"
+                        />
+                        <div class="autocomplete-dropdown" id="toSuggestions"></div>
+                    </div>
+                    <div class="location-badge" id="toBadge"></div>
+                </div>
+
+                <div class="form-group">
+                    <label for="departure">Departure Date</label>
+                    <input type="date" id="departure" />
+                </div>
+
+                <div class="form-group">
+                    <label for="return">Return Date</label>
+                    <input type="date" id="return" />
+                </div>
+
+                <button class="search-btn" onclick="searchRoutes()">Search</button>
+            </div>
+        </section>
+
+        <!-- Location Info Panel -->
+        <section class="location-info-panel" id="locationPanel" style="display: none;">
+            <div class="location-details">
+                <div class="location-from">
+                    <h4>From:</h4>
+                    <div id="fromInfo"></div>
+                </div>
+                <div class="location-arrow">→</div>
+                <div class="location-to">
+                    <h4>To:</h4>
+                    <div id="toInfo"></div>
+                </div>
+            </div>
+            <div class="popular-routes">
+                <h4>Popular Routes from Selected City:</h4>
+                <div id="popularRoutesContainer"></div>
+            </div>
+        </section>
+
+        <!-- Filters and Sorting -->
+        <section class="filter-section" id="filterSection" style="display: none;">
+            <div class="filter-controls">
+                <div class="sort-group">
+                    <label for="sortBy">Sort By:</label>
+                    <select id="sortBy" onchange="applySorting()">
+                        <option value="price">Lowest Price</option>
+                        <option value="duration">Shortest Duration</option>
+                        <option value="type">Transport Type</option>
+                    </select>
+                </div>
+                <div class="filter-buttons">
+                    <button class="filter-btn" onclick="filterByType('all')" data-type="all">All</button>
+                    <button class="filter-btn bus-filter" onclick="filterByType('bus')" data-type="bus">🚌 Bus</button>
+                    <button class="filter-btn train-filter" onclick="filterByType('train')" data-type="train">🚄 Train</button>
+                    <button class="filter-btn flight-filter" onclick="filterByType('flight')" data-type="flight">✈️ Flight</button>
+                </div>
+            </div>
+        </section>
+
+        <!-- Results Section -->
+        <section class="results-section">
+            <div id="results" class="results-container"></div>
+            <div id="noResults" class="no-results" style="display: none;">
+                <p>No routes found. Please try different cities or dates.</p>
+            </div>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
